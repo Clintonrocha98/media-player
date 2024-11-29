@@ -1,0 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# C extensions
+*.so
+
+# Virtual environment
+env/
+venv/
+ENV/
+.venv/
+.ENV/
+
+# Editor and IDE files
+*.swp
+*.swo
+*.idea/
+.vscode/
+*.code-workspace
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Logs and debug files
+*.log
+
+# Static cache
+static/*_cache/
+*.cache
+
+# Data and configuration files (optional, if generated)
+data/playlists/*.json
+data/config.json
+
+# Python egg files
+*.egg
+*.egg-info/
+dist/
+build/
