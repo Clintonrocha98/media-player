@@ -4,7 +4,7 @@ import tkinter as tk
 class Controls:
     def __init__(self, root: tk.Tk):
         self.__root = root
-        self.__center_button = tk.Button(self.__root, text="play")
+        self.__center_button = tk.Button(self.__root, text="play", width=15)
         self.__state_button = False  # False: Play, True: Pause
         self.__prev = tk.Button(self.__root, text="prev")
         self.__next = tk.Button(self.__root, text="next")
