@@ -3,7 +3,7 @@ from tkinter.filedialog import askopenfilenames
 from gui.progress_bar import ProgressBar
 from gui.controls import Controls
 from gui.music_list import MusicList
-from core.player import Pygame
+from core.pygame_audio_player import AudioPlayer
 from core.playlist import PlayList
 from utils.format_music_filename import format_music_filename
 
@@ -13,7 +13,7 @@ controls = Controls()
 playlist = PlayList()
 progress_bar = ProgressBar(root)
 music_list = MusicList(root)
-pygame_instance = Pygame()
+pygame_instance = AudioPlayer()
 
 def play():
     """Inicia a reprodução."""

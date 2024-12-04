@@ -1,6 +1,6 @@
 import pygame
 
-class Pygame:
+class AudioPlayer:
     def __init__(self):
         pygame.init() 
         pygame.mixer.init()
