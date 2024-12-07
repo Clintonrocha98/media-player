@@ -1,4 +1,5 @@
 from .node import Node
+import random
 
 class PlayList:
     def __init__(self):
@@ -23,6 +24,7 @@ class PlayList:
 
     def find_music(self, data):
         current = self.head
+    
         while current:
             if current.data == data:
                 return current
@@ -49,5 +51,20 @@ class PlayList:
             return self.current.data
         return None 
 
-    def reset(self):
-        self.current = self.head
+    def shuffle_playlist(self):
+        songs = []
+        current = self.head
+        current_song_data = self.current.data if self.current else None 
+
+        while current:
+            songs.append(current.data)
+            current = current.next
+
+        random.shuffle(songs)
+
+        self.head = self.tail = None
+        for song in songs:
+            self.add_music(song)
+
+        if current_song_data:
+            self.current = self.find_music(current_song_data)
