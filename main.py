@@ -1,14 +1,16 @@
 import tkinter as tk
 from tkinter.filedialog import askopenfilenames
-from gui.progress_bar import ProgressBar
-from gui.controls import Controls
-from gui.item_display_list import ItemDisplayList
-from gui.treeview import PlaylistWindow
-from core.pygame_audio_player import AudioPlayer
-from core.playlist import PlayList
-from utils.format_music_filename import format_music_filename
-from utils.list_files import list_files
-from utils.read_paths_from_file import read_paths_from_file
+from tkinter import simpledialog
+from gui import ProgressBar, Controls, ItemDisplayList,EditPlaylistTreeview
+from core import AudioPlayer, PlayList
+from utils import (
+    format_music_filename,
+    list_files,
+    read_paths_from_file,
+    create_and_append_file,
+    generate_playlist_filename,
+    restore_string,
+)
 
 root = tk.Tk()
 root.title("Clinton Mp3")
@@ -18,6 +20,7 @@ controls = Controls()
 progress_bar = ProgressBar(root)
 pygame_instance = AudioPlayer()
 playlist = PlayList()
+treeview = EditPlaylistTreeview()
 
 
 def play():
@@ -46,6 +49,7 @@ def open_and_add_music_files():
 
 def add_songs_from_playlist_to_ui():
     playlist_selected = playlist_ui.get_item_selected()
+    playlist_selected = generate_playlist_filename(playlist_selected)
     if not playlist_selected:
         return
 
@@ -104,6 +108,14 @@ def check_and_handle_pygame_events():
             play_next_song()
     root.after(500, check_and_handle_pygame_events)
 
+def create_playlist():
+    playlist_name = simpledialog.askstring("Criar playlist", "Nome da playlist")
+    if playlist_name:
+        file_name = generate_playlist_filename(playlist_name)
+        create_and_append_file(file_name)
+
+        ui_name = restore_string(file_name)
+        playlist_ui.add_to_list(ui_name)
 
 width = 650
 height = 500
@@ -130,14 +142,27 @@ music_list_ui.set_position(1, 1)
 
 controls.set_frame(main_frame)
 
-for file in list_files():
-    formatted_name = format_music_filename(file)
-    playlist_ui.add_to_list(formatted_name)
 
-play_playlist_button = tk.Button(
-    main_frame, text="play playlist", command=add_songs_from_playlist_to_ui
+tk.Button(main_frame, text="play playlist", command=add_songs_from_playlist_to_ui).grid(
+    row=2, column=0
 )
-play_playlist_button.grid(row=2, column=0)
+
+
+def seila():
+    playlist = playlist_ui.get_item_selected()
+    if playlist:
+        treeview.set_frame(main_frame)
+        treeview.set_playlist_name(playlist)
+
+
+tk.Button(main_frame, text="Criar playlist", command=create_playlist).grid(row=3, column=0)
+tk.Button(main_frame, text="editar", command=seila).grid(row=4, column=0)
+
+for file in list_files():
+    """Atualiza a ui com as playlists criadas"""
+    formatted_name = format_music_filename(file)
+    formatted_name = restore_string(formatted_name)
+    playlist_ui.add_to_list(formatted_name)
 
 controls.set_play_function(play)
 controls.set_pause_function(pause)
