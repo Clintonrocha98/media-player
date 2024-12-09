@@ -13,7 +13,10 @@ def rename_file(current_name, new_name):
         bool: True se a operação foi bem-sucedida, False caso contrário.
     """
     try:
-        os.rename("data/playlists" + current_name, "data/playlists" + new_name)
+        os.rename(
+            "data/playlists/" + current_name + ".txt",
+            "data/playlists/" + new_name + ".txt",
+        )
         print(f"File renamed from '{current_name}' to '{new_name}' successfully.")
         return True
     except FileNotFoundError:

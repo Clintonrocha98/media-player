@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter.filedialog import askopenfilenames
 from tkinter import simpledialog
-from gui import ProgressBar, Controls, ItemDisplayList,EditPlaylistTreeview
+from gui import ProgressBar, Controls, ItemDisplayList, EditPlaylistTreeview
 from core import AudioPlayer, PlayList
 from utils import (
     format_music_filename,
@@ -108,6 +108,7 @@ def check_and_handle_pygame_events():
             play_next_song()
     root.after(500, check_and_handle_pygame_events)
 
+
 def create_playlist():
     playlist_name = simpledialog.askstring("Criar playlist", "Nome da playlist")
     if playlist_name:
@@ -116,6 +117,13 @@ def create_playlist():
 
         ui_name = restore_string(file_name)
         playlist_ui.add_to_list(ui_name)
+
+def update_playlist_ui():
+    """Atualiza a ui com as playlists criadas"""
+    for file in list_files():
+        formatted_name = format_music_filename(file)
+        formatted_name = restore_string(formatted_name)
+        playlist_ui.add_to_list(formatted_name)
 
 width = 650
 height = 500
@@ -148,21 +156,20 @@ tk.Button(main_frame, text="play playlist", command=add_songs_from_playlist_to_u
 )
 
 
-def seila():
+def window_edit_playlist():
     playlist = playlist_ui.get_item_selected()
     if playlist:
-        treeview.set_frame(main_frame)
         treeview.set_playlist_name(playlist)
+        treeview.set_frame(main_frame)
+        treeview.set_update_playlist_ui_function(update_playlist_ui)
 
 
-tk.Button(main_frame, text="Criar playlist", command=create_playlist).grid(row=3, column=0)
-tk.Button(main_frame, text="editar", command=seila).grid(row=4, column=0)
+tk.Button(main_frame, text="Criar playlist", command=create_playlist).grid(
+    row=3, column=0
+)
+tk.Button(main_frame, text="editar", command=window_edit_playlist).grid(row=4, column=0)
 
-for file in list_files():
-    """Atualiza a ui com as playlists criadas"""
-    formatted_name = format_music_filename(file)
-    formatted_name = restore_string(formatted_name)
-    playlist_ui.add_to_list(formatted_name)
+update_playlist_ui()
 
 controls.set_play_function(play)
 controls.set_pause_function(pause)

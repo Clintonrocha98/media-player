@@ -5,6 +5,7 @@ from .create_and_append_file import create_and_append_file
 from .generate_playlist_filename import generate_playlist_filename
 from .restore_string import restore_string
 from .rename_file import rename_file
+from .remove_song_by_name import remove_song_by_name
 
 __all__ = [
     "format_music_filename",
@@ -13,5 +14,6 @@ __all__ = [
     "create_and_append_file",
     "generate_playlist_filename",
     "restore_string",
-    "rename_file"
+    "rename_file",
+    "remove_song_by_name"
 ]
