@@ -1,0 +1,3 @@
+/home/clinton/www/md-player/static/Aerobitch - Steamroller Blues[128k].mp3
+/home/clinton/www/md-player/static/Chixdiggit! - Quit Your Job[128k].mp3
+/home/clinton/www/md-player/static/Less Than Jake - Anchor[128k].mp3
