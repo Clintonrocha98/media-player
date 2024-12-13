@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter.filedialog import askopenfilenames
 from tkinter import simpledialog
-from gui import ProgressBar, Controls, ItemDisplayList, EditPlaylistTreeview
+from gui import Controls, ItemDisplayList, EditPlaylistTreeview
 from core import AudioPlayer, PlayList
 from utils import (
     format_music_filename,
@@ -10,14 +10,14 @@ from utils import (
     create_and_append_file,
     generate_playlist_filename,
     restore_string,
+    delete_playlist_file,
 )
 
 root = tk.Tk()
-root.title("Clinton Mp3")
+root.title("Radinho de pilha")
 music_list_ui = ItemDisplayList()
 playlist_ui = ItemDisplayList()
 controls = Controls()
-progress_bar = ProgressBar(root)
 pygame_instance = AudioPlayer()
 playlist = PlayList()
 treeview = EditPlaylistTreeview()
@@ -44,26 +44,6 @@ def open_and_add_music_files():
             formatted_name = format_music_filename(file)
             music_list_ui.add_to_list(formatted_name)
             playlist.add_music(file)
-        start_playback_if_not_playing()
-
-
-def add_songs_from_playlist_to_ui():
-    playlist_selected = playlist_ui.get_item_selected()
-    playlist_selected = generate_playlist_filename(playlist_selected)
-    if not playlist_selected:
-        return
-
-    file_paths = read_paths_from_file(playlist_selected)
-
-    if file_paths:
-        pygame_instance.stop()
-        music_list_ui.clear_list()
-
-        for file in file_paths:
-            formatted_name = format_music_filename(file)
-            music_list_ui.add_to_list(formatted_name)
-            playlist.add_music(file)
-
         start_playback_if_not_playing()
 
 
@@ -109,6 +89,26 @@ def check_and_handle_pygame_events():
     root.after(500, check_and_handle_pygame_events)
 
 
+def add_songs_from_playlist_to_ui():
+    playlist_selected = playlist_ui.get_item_selected()
+    playlist_selected = generate_playlist_filename(playlist_selected)
+    if not playlist_selected:
+        return
+
+    file_paths = read_paths_from_file(playlist_selected)
+
+    if file_paths:
+        pygame_instance.stop()
+        music_list_ui.clear_list()
+
+        for file in file_paths:
+            formatted_name = format_music_filename(file)
+            music_list_ui.add_to_list(formatted_name)
+            playlist.add_music(file)
+
+        start_playback_if_not_playing()
+
+
 def create_playlist():
     playlist_name = simpledialog.askstring("Criar playlist", "Nome da playlist")
     if playlist_name:
@@ -118,12 +118,32 @@ def create_playlist():
         ui_name = restore_string(file_name)
         playlist_ui.add_to_list(ui_name)
 
+
 def update_playlist_ui():
     """Atualiza a ui com as playlists criadas"""
     for file in list_files():
         formatted_name = format_music_filename(file)
         formatted_name = restore_string(formatted_name)
         playlist_ui.add_to_list(formatted_name)
+
+
+def delete_playlist():
+    playlist_selected = playlist_ui.get_item_selected()
+    playlist_selected = generate_playlist_filename(playlist_selected)
+    if not playlist_selected:
+        return
+    delete_playlist_file(playlist_selected)
+    playlist_ui.clear_list()
+    update_playlist_ui()
+
+
+def window_edit_playlist():
+    playlist = playlist_ui.get_item_selected()
+    if playlist:
+        treeview.set_playlist_name(playlist)
+        treeview.set_frame(main_frame)
+        treeview.set_update_playlist_ui_function(update_playlist_ui)
+
 
 width = 650
 height = 500
@@ -151,23 +171,21 @@ music_list_ui.set_position(1, 1)
 controls.set_frame(main_frame)
 
 
-tk.Button(main_frame, text="play playlist", command=add_songs_from_playlist_to_ui).grid(
-    row=2, column=0
-)
-
-
-def window_edit_playlist():
-    playlist = playlist_ui.get_item_selected()
-    if playlist:
-        treeview.set_playlist_name(playlist)
-        treeview.set_frame(main_frame)
-        treeview.set_update_playlist_ui_function(update_playlist_ui)
-
+tk.Button(
+    main_frame, text="Tocar Playlist", command=add_songs_from_playlist_to_ui
+).grid(row=2, column=0, sticky="nsew")
 
 tk.Button(main_frame, text="Criar playlist", command=create_playlist).grid(
-    row=3, column=0
+    row=3, column=0, sticky="nsew"
 )
-tk.Button(main_frame, text="editar", command=window_edit_playlist).grid(row=4, column=0)
+
+tk.Button(main_frame, text="Editar Playlist", command=window_edit_playlist).grid(
+    row=4, column=0, sticky="nsew"
+)
+
+tk.Button(main_frame, text="Apagar Playlist", command=delete_playlist).grid(
+    row=5, column=0, sticky="nsew"
+)
 
 update_playlist_ui()
 

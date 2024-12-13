@@ -6,6 +6,7 @@ from .generate_playlist_filename import generate_playlist_filename
 from .restore_string import restore_string
 from .rename_file import rename_file
 from .remove_song_by_name import remove_song_by_name
+from .delete_playlist_file import delete_playlist_file
 
 __all__ = [
     "format_music_filename",
@@ -15,5 +16,6 @@ __all__ = [
     "generate_playlist_filename",
     "restore_string",
     "rename_file",
-    "remove_song_by_name"
+    "remove_song_by_name",
+    "delete_playlist_file"
 ]
