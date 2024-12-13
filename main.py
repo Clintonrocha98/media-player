@@ -98,8 +98,10 @@ def add_songs_from_playlist_to_ui():
     file_paths = read_paths_from_file(playlist_selected)
 
     if file_paths:
-        pygame_instance.stop()
+        if pygame_instance.is_playing():
+            pygame_instance.stop()
         music_list_ui.clear_list()
+        playlist.reset()
 
         for file in file_paths:
             formatted_name = format_music_filename(file)

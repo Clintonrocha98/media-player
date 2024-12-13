@@ -68,3 +68,14 @@ class PlayList:
 
         if current_song_name:
             self.current = self.find_music(current_song_name)
+
+    def reset(self):
+        current = self.head
+        while current:
+            next_node = current.next
+            current.prev = None
+            current.next = None
+            current = next_node
+        self.head = None
+        self.tail = None
+        self.current = None

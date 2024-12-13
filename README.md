@@ -32,7 +32,6 @@ media_player/
 ├── core/                    # Módulos centrais do sistema
 ├── gui/                     # Interface gráfica (se houver)
 ├── utils/                   # Funções auxiliares
-├── tests/                   # Testes automatizados
 ├── static/                  # Recursos estáticos
 ├── data/                    # Dados persistentes do sistema
 ├── README.md                # Documentação básica do projeto
