@@ -1,3 +1,20 @@
+# Instalação 
+
+1. Clone este repositório:
+```bash
+git clone git@github.com:Clintonrocha98/media-player.git
+cd media-player
+```
+
+2. Instale as dependências necessárias:
+```bash
+pip install -r requirements.txt
+```
+
+3. Execute o arquivo principal:
+```bash
+python3 main.py
+```
 
 # Requisitos Funcionais
 
@@ -25,6 +42,9 @@ usuário.
   - Deve haver uma opção para executar as músicas em ordem aleatória (randômica).
   - O usuário deve poder randomizar a ordem das músicas em uma playlist escolhida.
   - As estruturas das playlists devem ser armazenadas em arquivos para manter as playlists criadas
+
+
+# Estrutura do Projeto
 
 ```markdown
 media_player/
